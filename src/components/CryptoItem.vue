@@ -2,36 +2,47 @@
     <div class="card">
         <td class="rank pl-3">
             <!-- rank -->
-            <!-- test 1: fail, tout dans une seule cellule/ligne-->
-            <!-- <p v-bind:key="indexCrypt" v-for="(elt,indexCrypt) in cryptoList">{{ elt.rank }}</p> -->
-            <!-- test 2 : fail, itération sur le 1er rank de chaque tableau donc seulement 3 réponses -->
-            <p>{{ cryptoList[0].rank }}</p>
-            <p>{{ cryptoList[1].rank }}</p>
-            <p>{{ cryptoList[2].rank }}</p>
-        </td>
-        <td class="imgcur">
-            <!-- <img class="card-img-top mr-3" v-bind:src="cryptoList.iconUrl"> -->
-            <!-- name -->
-            <!-- <h5>{{ cryptoList.name }}</h5> -->
+            <p>{{ detail.rank }}</p>
         </td>
         <td>
+            <!-- name -->
+            <p>{{ detail.name }}</p>
+        </td>
+        <!-- <td> -->
+            <!-- symbol -->
+            <!-- <p>{{ cryptoList.symbol }}</p> -->
+        <!-- </td> -->
+        <td class="imgcur">
+            <img class="card-img-top mr-3" v-bind:src="detail.iconUrl">
+            <!-- Symbol -->
+            <h5>{{ detail.symbol }}</h5>
+        </td>
+        <!-- <td> -->
             <!-- Symbol -->
             <!-- <p>{{ cryptoList.symbol }} </p> -->
-        </td>
+        <!-- </td> -->
+
         <!-- <td> -->
             <!-- Price -->
             <!-- <p>{{ parseFloat(cryptoList.price).toLocaleString() }} $ </p> -->
         <!-- </td> -->
         <td>
-            <!-- Evolution -->
-            <!-- <p v-if="cryptoList.sparkline[cryptoList.sparkline.length-1] > cryptoList.sparkline[cryptoList.sparkline.length-2]" style="color: #7DE8BA;">{{ parseFloat(cryptoList.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} &nearr;</p> -->
-            <!-- <p v-else style="color:#F5716C;">{{ parseFloat(cryptoList.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} &searr;</p> -->
+            <!-- Price -->
+            <p v-if="detail.sparkline[detail.sparkline.length-1] > detail.sparkline[detail.sparkline.length-2]" style="color: #7DE8BA;">{{ parseFloat(detail.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $ &nearr;</p>
+            <p v-else style="color:#F5716C;">{{ parseFloat(detail.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $ &searr;</p>
         </td>
         <td>
             <!-- evolution 24h -->
-            <!-- <p>{{ parseFloat(cryptoList.change).toFixed(2) }} %</p> -->
+            <p>{{ parseFloat(detail.change).toFixed(2) }} %</p>
         </td>
-        <td>
+        <td> 
+            <table>
+                <td v-bind:key="index" v-for="(elt7d, index) in cryptoList7d">
+                    <item7d :elt7d="elt7d"></item7d>
+                    <!-- {{ elt7d.name }} -->
+                </td>
+            </table>
+
             <!-- evolution 7 days -->
             <!-- <p>{{ evol7d.change }} %</p> -->
             <!-- <p>{{ parseFloat(evol7d.change).toFixed(2) }} %%</p> -->
@@ -42,19 +53,27 @@
             <!-- <p>{{ parseFloat(evol30d.change).toFixed(2) }} %</p> -->
         </td>
         <td>
-            <!-- <p>{{ parseFloat(cryptoList["24hVolume"]).toFixed().toLocaleString() }}</p> -->
+            <!-- Volume (24h) -->
+            <p>{{ parseFloat(detail["24hVolume"]).toFixed().toLocaleString() }}</p>
         </td>
         <td>
             <!-- website -->
-            <!-- <a v-bind:href="cryptoList.websiteUrl" target="_blank" class="btn">Trade & Details</a> -->
+            <a v-bind:href="detail.websiteUrl" target="_blank" class="btn">Trade & Details</a>
+
         </td>
     </div>    
 </template>
 
 <script>
+// import Item7d from './Item7d'
+
 export default {
     name: "cryptoItem",
-    props: ['detail', 'crypto', 'urlIcon', 'lastEvol', 'previousEvol', 'coinUuid', 'listUuids', 'idLinks', 'cryptoList', 'elt','sparkline', 'evol7d', 'evol30d']
+    props: ['detail', 'crypto', 'urlIcon', 'lastEvol', 'previousEvol', 'coinUuid', 'listUuids', 'idLinks', 'cryptoList', 'sparkline', 'change', 'index', 'elt7d', 'cryptoList7d'],
+    components: {
+        // 'item7d' : Item7d
+    }
+
 }
 </script>
 

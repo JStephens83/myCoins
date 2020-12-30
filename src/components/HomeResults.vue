@@ -23,11 +23,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-bind:key="index" v-for="(detail, index) in limitCryptoRes">
+                <!-- fonctionne avec "="  -->
+                <tr v-bind:key="index" v-for="(detail, index) in cryptoList">
+                    <cryptoItem 
+                    :detail="detail"
+                    :cryptoList7d="cryptoList7d"
+                    class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
+                </tr>
+                <!-- Avec limitCryptoRes: 
+                    <tr v-bind:key="index" v-for="(detail, index) in limitCryptoRes">
                     <cryptoItem 
                     v-bind:cryptoList="detail"
                     class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
-                </tr>
+                </tr> -->
+
                 <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
             </tbody>
         </table>
@@ -41,7 +50,9 @@ import CryptoItem from './CryptoItem'
 
 // const globStats_url = "https://api.coinranking.com/v2/stats"
 
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"
+
+// const proxyUrl = "https://cors-anywhere.herokuapp.com/"
+
 
 const coins_url = "https://api.coinranking.com/v2/coins"
 const coins_url_7d = "https://api.coinranking.com/v2/coins?timePeriod=7d"
@@ -49,14 +60,16 @@ const coins_url_30d = "https://api.coinranking.com/v2/coins?timePeriod=30d"
 
 // const history_url = "https://api.coinranking.com/v2/coin/Qwsogvtv82FCd/history"
 
-const access_token = 'coinrankingc3527795be2210a2aea7b0677f9aaea396a4656499dc6034'
 
-const reqHeaders = {
-    headers: {
-        'Access-Control-Allow-Headers': 'x-access-token',
-        'x-access-token': `token ${access_token}`
-    }
-}
+// const access_token = 'coinrankingc3527795be2210a2aea7b0677f9aaea396a4656499dc6034'
+
+// const reqHeaders = {
+//     headers: {
+//         'Access-Control-Allow-Headers': 'x-access-token',
+//         'x-access-token': `token ${access_token}`
+//     }
+// }
+
 
 export default {
     name: 'HomeResults',
@@ -68,28 +81,28 @@ export default {
             globVol24: null,
             totalCoins: null,
             marketCap: null,
-            evol7d: null,
-            evol30d: null
+
+            cryptoList7d : [],
+            cryptoList30d : [],
+            // elt7d: null
+
         }
     },
     mounted(){
         //COINS DATA
         axios
-        .get(proxyUrl + coins_url, { 
-            reqHeaders
-        })
+
+        .get(`${coins_url}`)
+        // .get(proxyUrl + coins_url, { 
+        //     reqHeaders
+        // })
         .then((reponseCoins) => {
             // console.log(reponseCoins.data)
             //COINS DATA:
-            // this.cryptoList = reponseCoins.data.data.coins;
-            this.cryptoList.push(reponseCoins.data.data.coins);
-            console.log(this.cryptoList)
-            //test1
+            this.cryptoList = reponseCoins.data.data.coins;
             // this.cryptoList.push(reponseCoins.data.data.coins);
-            // console.log(this.cryptoList)
-            // this.cryptoList.forEach( elt => {
-            //     console.log(elt.sparkline)
-            // })
+            console.log(this.cryptoList)
+
 
 
             //GLOBAL DATA:
@@ -102,11 +115,6 @@ export default {
             this.marketCap = this.globalStats.totalMarketCap;
 
 
-            //RELOAD REQUETE:
-            // this.crypto = setInterval(() => {
-            // reponseCoins.data.data.coins;
-            // },5000)
-            // console.log(this.crypto);
         })
         .catch((error) => {
             console.error(error)
@@ -115,134 +123,84 @@ export default {
 
         // EVOLUTION 7 DAYS
         axios
-        .get(proxyUrl + coins_url_7d, { 
-            reqHeaders
-        })
+
+        .get(`${coins_url_7d}`)
         .then((reponse7d) => {
             // console.log(reponse7d.data)
-            this.evol7d = reponse7d.data.data.coins;
+            // Test 3 avec composant :
+            this.cryptoList7d = reponse7d.data.data.coins;
+
+
+            // Test 2 avec composant:
+            // this.change7d = reponse7d.data.data.coins;
+            // console.log(this.change7d);
+            // this.change7d.forEach(elt => {
+            //     // console.log(elt.change)
+            //     this.cryptoList7d.push(elt.change);
+            // });
+            console.log(this.cryptoList7d);
             //test1 : fonctionne mais pas utile pour le moment
-            this.cryptoList.push(this.evol7d)
-            //test2 : fail, fait tout planter
-            // this.cryptoList = reponse7d.data.data.coins;
-            console.log(this.cryptoList)
+            // FONCTIONNE
+            // this.cryptoList7d = this.change7d;
+            // this.cryptoList.push(this.change7d);
+            // console.log(this.cryptoList7d);
 
-            //test foreach pour voir si on accede aux donnée : SUCCESS
-            // this.evol7d.forEach(evolelt => {
-            //     console.log(evolelt.change);
-            // })
-            //RELOAD REQUETE:
-            // this.crypto = setInterval(() => {
-            // reponseCoins.data.data.coins;
-            // },5000)
-            // console.log(this.crypto);
         })
         .catch((error) => {
             console.error(error)
         })
 
-        // EVOLUTION 30 DAYS
+
+        // // EVOLUTION 30 DAYS
         axios
-        .get(proxyUrl + coins_url_30d, { 
-            reqHeaders
-        })
+        .get(`${coins_url_30d}`)
         .then((reponse30d) => {
-            console.log(reponse30d.data)
-            this.evol30d = reponse30d.data.data.coins;
-            //Test1 :  fonctionne mais pas utile pour le moment
-            this.cryptoList.push(this.evol30d);
-            //Test2 : fail, fait tout planter 
-            // this.cryptoList = reponse30d.data.data.coins;
-            console.log(this.cryptoList)
+            // console.log(reponse30d.data)
+            this.change30d = reponse30d.data.data.coins;
 
-        //     //RELOAD REQUETE:
-        //     // this.crypto = setInterval(() => {
-        //     // reponseCoins.data.data.coins;
-        //     // },5000)
-        //     // console.log(this.crypto);
+            this.change30d.forEach(elt => {
+                // console.log(elt.change)
+                this.cryptoList30d.push(elt.change);
+            });
+            // console.log(this.cryptoList30d);
+
+            // console.log(this.change30d);
+            //Test1 :  fonctionne mais pas utile pour le moment
+            // this.cryptoList30d = this.change30d;
+            // console.log(this.cryptoList30d);
+
         })
         .catch((error) => {
             console.error(error)
         })
 
-
-        // //GLOBAL DATA (fait directement dans COINS DATA)
-        // axios
-        // .get(proxyUrl + globStats_url, { 
-        //     reqHeaders
-        // })
-        // .then((reponseGlobalData) => {
-        //     console.log(reponseGlobalData.data)
-        //     //volume 24h
-        //     this.globVol24 = reponseGlobalData.data.data.total24hVolume;
-        //     //total coins
-        //     this.totalCoins = reponseGlobalData.data.data.totalCoins;
-        //     //Market capitalization
-        //     this.marketCap = reponseGlobalData.data.data.totalMarketCap
-        // })
-        // .catch((error) => {
-        //     console.error(error)
-        // })
-
-
-        // COIN HISTORY - pour plus tard
-        // axios
-        // .get(proxyUrl + history_url, { 
-        //     reqHeaders
-        // })
-        // .then((reponseHistory) => {
-        //     // console.log(reponseHistory.data)
-        //     // get data from last element
-        //     const history = reponseHistory.data.data.history
-        //     this.lastItem = history[history.length-1]
-        //     // console.log(this.lastItem)
-        //     this.lastEvol = this.lastItem.price
-        //     // console.log(this.lastEvol)
-        //     //get data from previous element:
-        //     this.previousItem = history[history.length-2]
-        //     this.previousEvol = this.previousItem.price
-        //     // console.log(this.previousEvol)
-            
-        //     //Evolution entrée précédente
-        //     //comparaison à faire direct sur cryptoitem
-        // })
-        // .catch((error) => {
-        //     console.error(error)
-        // })
-
-
-        //GET ALL COINS UUIDs
-        // axios
-        // .get(proxyUrl + coins_url, { 
-        //     reqHeaders
-        // })
-        // .then((reponseUuid) => {
-        //     this.cryptoUuidList = reponseUuid.data.data.coins;
-        //     console.log(this.cryptoUuidList)
-        //     //accès à chaque uuid de chaque crypto:
-        //     this.cryptoUuidList.forEach(coinUuid => {
-        //         console.log("id is: " + coinUuid.uuid)
-        //         //stockage des valeurs dans tableau  listUuids
-        //         this.listUuids.push(coinUuid.uuid);
-        //     });
-        //     // console.log("listUuids is : " + this.listUuids)
-
-        //     //Creation of all links for each uuid:
-        //     // this.listUuids.forEach(coinUuid => {
-        //     //     var idLinks = "https://api.coinranking.com/v2/coin/" + coinUuid + "/history"
-        //     //     console.log(idLinks)
-        //     // })
-        //     // console.log("idLinks is : " + idLinks)
-        // })
-        // .catch((error) => {
-        //     console.error(error)
-        // })
     },
     computed: {
         // Limite du nombre de résultats affichés
-        limitCryptoRes: function() {
-            return this.limit ? this.cryptoList.slice(0, this.limit) : this.cryptoList;
-        }
+        // limitCryptoRes: function() {
+        //     return this.limit ? this.cryptoList.slice(0, this.limit) : this.cryptoList;
+        // },
+        
+        //elt inside elt
+        // changes: function() {
+        //     var changes7d = [];
+        //     for (let i = 0; i < this.cryptoList7d.length; i++) {
+        //         console.log("length is " + i)
+        //         console.log(this.cryptoList7d.length)
+        //     //     for (let j = 0; j < this.cryptoList[i].length; j++) {
+        //     //         changes.push(this.cryptoList[i][j].change)
+        //     //         console.log(this.cryptoList[i][j].change + " " + [j])
+        //     //     }
+
+        //     // test 2:
+
+        //     }
+
+
+        //     console.log(changes7d)
+        //     return changes7d;
+        // }
+
     },
     components: {
         'cryptoItem' : CryptoItem
