@@ -21,6 +21,7 @@
             <!-- Symbol -->
             <!-- <p>{{ cryptoList.symbol }} </p> -->
         <!-- </td> -->
+
         <!-- <td> -->
             <!-- Price -->
             <!-- <p>{{ parseFloat(cryptoList.price).toLocaleString() }} $ </p> -->
@@ -58,6 +59,7 @@
         <td>
             <!-- website -->
             <a v-bind:href="detail.websiteUrl" target="_blank" class="btn">Trade & Details</a>
+
         </td>
     </div>    
 </template>
@@ -71,6 +73,7 @@ export default {
     components: {
         // 'item7d' : Item7d
     }
+
 }
 </script>
 

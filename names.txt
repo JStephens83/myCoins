@@ -1,0 +1,50 @@
+market
+trade
+finance
+key(s)
+kpi(s)
+
+crypto 
+coin(s)
+
+compare
+list
+rank(ing)
+stats
+graph
+evolution
+monitor(ing)
+
+trend
+base
+source
+HQ
+home
+station
+
+bit
+angel
+
+
+----
+
+coinTrend ++ (existe deja, mais en io)
+cryptoTrend (existe deja)
+
+coinTrade(existe deja)
+tradeCoin
+
+kpiCoins
+
+coinMonitor (existe en io et info)
+
+coinSource + (existe deja, bitcoin ATM network)
+cryptoSource (existe deja, actualité crypto)
+
+coinHq (chelou lire)
+
+coinStation ++
+cryptoStation
+
+coinAngel (dispo)
+

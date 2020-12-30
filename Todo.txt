@@ -1,0 +1,31 @@
+Features:
+* Système (composant ?) de recherche de currency
+* Affichage des infos
+* Mettre en favoris (max 5) pour la page d'accueil du profil
+* Par défaut accueil avec top 5 currencies en valeur (ou en montée dans 7 derniers jours ?)
+* Faire un profil (composant ?)
+* Composant actualité crypto-monnaies
+* Bulle info > modale avec description
+* Affichage dynamique des currencies
+* Macaron avec rank de la currency
+* Quand user choisi sa currency, s'inspirer de la todo liste d'Udemy
+* Quand recherche de currency, faire disparaitre les items puis afficher le resultat
+* Vérifier/optimiser les lifecycle hooks
+* mettre projet sur github
+
+
+Où j'en suis:
+* Recherche: PAUSE (erreur pour le moment)
+Il semble qu'on ne puisse pas rechercher par nom mais uniquement par ID (associer ID à nom ?)
+
+* rafraichissement: PAUSE
+- rafraichissement du tableau ?
+- probleme avec limitcryptores/slice non reconnu quand j'ajoute le setinterval.
+
+* Comparaison: A TERMINER
+- Faire 1h/24h/7j -- à vérifier si possible
+def dans doc : An Epoch timestamp in seconds when the coin had the given price.
+7j/30j: j'accede à l'objet mais pas à sa propriété "change", peut-etre parce qu'appel à meme api 3 fois (trop lourd, chargements différents)
+- Testé en faisant des = putot que des push sur les requetes pour vérifier mais fait tout planter
+- Testé de pusher 3 requetes dans meme tableau mais difficultés à aller recupérer l'info (A REGARDER PLUS EN PROFONDEUR)
+boucle for dans une boucle for sur le composant ? Semble compliqué.

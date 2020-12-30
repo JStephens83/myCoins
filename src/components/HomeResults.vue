@@ -36,6 +36,7 @@
                     v-bind:cryptoList="detail"
                     class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
                 </tr> -->
+
                 <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
             </tbody>
         </table>
@@ -49,13 +50,16 @@ import CryptoItem from './CryptoItem'
 
 // const globStats_url = "https://api.coinranking.com/v2/stats"
 
+
 // const proxyUrl = "https://cors-anywhere.herokuapp.com/"
+
 
 const coins_url = "https://api.coinranking.com/v2/coins"
 const coins_url_7d = "https://api.coinranking.com/v2/coins?timePeriod=7d"
 const coins_url_30d = "https://api.coinranking.com/v2/coins?timePeriod=30d"
 
 // const history_url = "https://api.coinranking.com/v2/coin/Qwsogvtv82FCd/history"
+
 
 // const access_token = 'coinrankingc3527795be2210a2aea7b0677f9aaea396a4656499dc6034'
 
@@ -65,6 +69,7 @@ const coins_url_30d = "https://api.coinranking.com/v2/coins?timePeriod=30d"
 //         'x-access-token': `token ${access_token}`
 //     }
 // }
+
 
 export default {
     name: 'HomeResults',
@@ -76,14 +81,17 @@ export default {
             globVol24: null,
             totalCoins: null,
             marketCap: null,
+
             cryptoList7d : [],
             cryptoList30d : [],
             // elt7d: null
+
         }
     },
     mounted(){
         //COINS DATA
         axios
+
         .get(`${coins_url}`)
         // .get(proxyUrl + coins_url, { 
         //     reqHeaders
@@ -96,6 +104,7 @@ export default {
             console.log(this.cryptoList)
 
 
+
             //GLOBAL DATA:
             this.globalStats = reponseCoins.data.data.stats;
             //volume 24h
@@ -104,6 +113,8 @@ export default {
             this.totalCoins = this.globalStats.total;
             //Market capitalization
             this.marketCap = this.globalStats.totalMarketCap;
+
+
         })
         .catch((error) => {
             console.error(error)
@@ -112,6 +123,7 @@ export default {
 
         // EVOLUTION 7 DAYS
         axios
+
         .get(`${coins_url_7d}`)
         .then((reponse7d) => {
             // console.log(reponse7d.data)
@@ -132,10 +144,12 @@ export default {
             // this.cryptoList7d = this.change7d;
             // this.cryptoList.push(this.change7d);
             // console.log(this.cryptoList7d);
+
         })
         .catch((error) => {
             console.error(error)
         })
+
 
         // // EVOLUTION 30 DAYS
         axios
@@ -154,10 +168,12 @@ export default {
             //Test1 :  fonctionne mais pas utile pour le moment
             // this.cryptoList30d = this.change30d;
             // console.log(this.cryptoList30d);
+
         })
         .catch((error) => {
             console.error(error)
         })
+
     },
     computed: {
         // Limite du nombre de résultats affichés
@@ -184,6 +200,7 @@ export default {
         //     console.log(changes7d)
         //     return changes7d;
         // }
+
     },
     components: {
         'cryptoItem' : CryptoItem
