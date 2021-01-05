@@ -59,6 +59,7 @@ const coins_url_30d = "https://api.coinranking.com/v2/coins?timePeriod=30d"
 //     }
 // }
 
+
 export default {
     name: 'HomeResults',
     data(){
@@ -69,6 +70,7 @@ export default {
             globVol24: null,
             totalCoins: null,
             marketCap: null,
+
             cryptoList7d : [],
             cryptoList30d : [],
             change7dList : [],
@@ -78,6 +80,7 @@ export default {
     mounted(){
         //COINS DATA
         axios
+
         .get(`${coins_url}`)
         // .get(proxyUrl + coins_url, { 
         //     reqHeaders
@@ -95,6 +98,8 @@ export default {
             this.totalCoins = this.globalStats.total;
             //Market capitalization
             this.marketCap = this.globalStats.totalMarketCap;
+
+
         })
         .catch((error) => {
             console.error(error)
@@ -103,6 +108,7 @@ export default {
 
         // EVOLUTION 7 DAYS
         axios
+
         .get(`${coins_url_7d}`)
         .then((reponse7d) => {
             this.cryptoList7d = reponse7d.data.data.coins;
@@ -122,6 +128,7 @@ export default {
             console.error(error)
         })
 
+
         // // EVOLUTION 30 DAYS
         axios
         .get(`${coins_url_30d}`)
@@ -140,6 +147,7 @@ export default {
         .catch((error) => {
             console.error(error)
         })
+
     },
     computed: {
         // Limite du nombre de résultats affichés

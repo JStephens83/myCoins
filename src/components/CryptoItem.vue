@@ -37,6 +37,7 @@
         <td>
             <!-- website -->
             <a v-bind:href="detail.websiteUrl" target="_blank" class="btn">Trade & Details</a>
+
         </td>
     </div>    
 </template>
