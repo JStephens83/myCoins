@@ -23,19 +23,11 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- fonctionne avec "="  -->
-                <tr v-bind:key="index" v-for="(detail, index) in cryptoList">
+                <tr v-for="(detail, index) in cryptoList" v-bind:key="index">
                     <cryptoItem 
                     :detail="detail"
-                    :cryptoList7d="cryptoList7d"
                     class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
                 </tr>
-                <!-- Avec limitCryptoRes: 
-                    <tr v-bind:key="index" v-for="(detail, index) in limitCryptoRes">
-                    <cryptoItem 
-                    v-bind:cryptoList="detail"
-                    class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
-                </tr> -->
                 <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
             </tbody>
         </table>
@@ -47,15 +39,16 @@
 import axios from 'axios'
 import CryptoItem from './CryptoItem'
 
-// const globStats_url = "https://api.coinranking.com/v2/stats"
-
-// const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-
 const coins_url = "https://api.coinranking.com/v2/coins"
 const coins_url_7d = "https://api.coinranking.com/v2/coins?timePeriod=7d"
 const coins_url_30d = "https://api.coinranking.com/v2/coins?timePeriod=30d"
 
+// const globStats_url = "https://api.coinranking.com/v2/stats"
+
 // const history_url = "https://api.coinranking.com/v2/coin/Qwsogvtv82FCd/history"
+
+//HEROKUAPP DELETED 01.2021, using firefox module instead
+// const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 // const access_token = 'coinrankingc3527795be2210a2aea7b0677f9aaea396a4656499dc6034'
 
@@ -78,7 +71,8 @@ export default {
             marketCap: null,
             cryptoList7d : [],
             cryptoList30d : [],
-            // elt7d: null
+            change7dList : [],
+            change30dList : []
         }
     },
     mounted(){
@@ -89,12 +83,9 @@ export default {
         //     reqHeaders
         // })
         .then((reponseCoins) => {
-            // console.log(reponseCoins.data)
             //COINS DATA:
             this.cryptoList = reponseCoins.data.data.coins;
-            // this.cryptoList.push(reponseCoins.data.data.coins);
             console.log(this.cryptoList)
-
 
             //GLOBAL DATA:
             this.globalStats = reponseCoins.data.data.stats;
@@ -114,24 +105,18 @@ export default {
         axios
         .get(`${coins_url_7d}`)
         .then((reponse7d) => {
-            // console.log(reponse7d.data)
-            // Test 3 avec composant :
             this.cryptoList7d = reponse7d.data.data.coins;
+            // console.log(this.cryptoList7d)
 
-
-            // Test 2 avec composant:
-            // this.change7d = reponse7d.data.data.coins;
-            // console.log(this.change7d);
-            // this.change7d.forEach(elt => {
-            //     // console.log(elt.change)
-            //     this.cryptoList7d.push(elt.change);
-            // });
-            console.log(this.cryptoList7d);
-            //test1 : fonctionne mais pas utile pour le moment
-            // FONCTIONNE
-            // this.cryptoList7d = this.change7d;
-            // this.cryptoList.push(this.change7d);
-            // console.log(this.cryptoList7d);
+            // Adding change element to a new array
+            this.cryptoList7d.forEach(elt => {
+                this.change7dList.push(elt.change);
+            });
+            console.log(this.change7dList);
+            // Adding change7d property to all elements in cryptoList:
+            for (var i = 0; i < this.cryptoList.length; i++) {
+                this.cryptoList[i].change7d = this.change7dList[i];
+            }
         })
         .catch((error) => {
             console.error(error)
@@ -142,18 +127,15 @@ export default {
         .get(`${coins_url_30d}`)
         .then((reponse30d) => {
             // console.log(reponse30d.data)
-            this.change30d = reponse30d.data.data.coins;
-
-            this.change30d.forEach(elt => {
-                // console.log(elt.change)
-                this.cryptoList30d.push(elt.change);
+            this.cryptoList30d = reponse30d.data.data.coins;
+            // Adding change element to a new array
+            this.cryptoList30d.forEach(elt => {
+                this.change30dList.push(elt.change);
             });
-            // console.log(this.cryptoList30d);
-
-            // console.log(this.change30d);
-            //Test1 :  fonctionne mais pas utile pour le moment
-            // this.cryptoList30d = this.change30d;
-            // console.log(this.cryptoList30d);
+            // Adding change30d property to all elements in cryptoList:
+            for (var i = 0; i < this.cryptoList.length; i++) {
+                this.cryptoList[i].change30d = this.change30dList[i];
+            }
         })
         .catch((error) => {
             console.error(error)
@@ -164,26 +146,6 @@ export default {
         // limitCryptoRes: function() {
         //     return this.limit ? this.cryptoList.slice(0, this.limit) : this.cryptoList;
         // },
-        
-        //elt inside elt
-        // changes: function() {
-        //     var changes7d = [];
-        //     for (let i = 0; i < this.cryptoList7d.length; i++) {
-        //         console.log("length is " + i)
-        //         console.log(this.cryptoList7d.length)
-        //     //     for (let j = 0; j < this.cryptoList[i].length; j++) {
-        //     //         changes.push(this.cryptoList[i][j].change)
-        //     //         console.log(this.cryptoList[i][j].change + " " + [j])
-        //     //     }
-
-        //     // test 2:
-
-        //     }
-
-
-        //     console.log(changes7d)
-        //     return changes7d;
-        // }
     },
     components: {
         'cryptoItem' : CryptoItem
