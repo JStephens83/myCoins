@@ -1,12 +1,15 @@
 <template>
     <div class="globalCard container mt-2 mr-2 ml-2 mx-auto">
         <p class="title">Global Market Statistics</p>
-        <ul class="globalData card pt-3 pb-3 pl-3 pr-3s">
-            <li>Total Volume (24h) : {{ parseFloat(globVol24).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $</li>
-            <li>Total Coins : {{ totalCoins }} </li>
-            <li>Global Cryptocurrency Market Capitalization : {{ parseFloat(marketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $
-            </li>
-        </ul>
+        <div class="globalData">
+            <div class="topMarketCard">Total Volume (24h) : {{ parseFloat(globVol24).toLocaleString(undefined, {minimumFractionDigits: 2}) }} $</div>
+            <div class="topMarketCard middle">
+                <p>Total Coins : </p>
+                <p>{{ totalCoins }}</p>
+            </div>
+            <div class="topMarketCard last">Global Cryptocurrency Market Capitalization : {{ parseFloat(marketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $
+            </div>
+        </div>
         <p class="title list">Crypto-currencies</p>
         <table>
             <thead class="pl-3 pr-3 pt-3 pb-3">
@@ -26,7 +29,7 @@
                 <tr v-for="(detail, index) in cryptoList" v-bind:key="index">
                     <cryptoItem 
                     :detail="detail"
-                    class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
+                    class="pt-3 pb-3 pl-3 pr-3"></cryptoItem>
                 </tr>
                 <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
             </tbody>
@@ -88,10 +91,11 @@ export default {
         .then((reponseCoins) => {
             //COINS DATA:
             this.cryptoList = reponseCoins.data.data.coins;
-            console.log(this.cryptoList)
+            // console.log(this.cryptoList)
 
             //GLOBAL DATA:
             this.globalStats = reponseCoins.data.data.stats;
+            // console.log(this.globalStats)
             //volume 24h
             this.globVol24 = this.globalStats.total24hVolume;
             //total coins
@@ -118,7 +122,7 @@ export default {
             this.cryptoList7d.forEach(elt => {
                 this.change7dList.push(elt.change);
             });
-            console.log(this.change7dList);
+            // console.log(this.change7dList);
             // Adding change7d property to all elements in cryptoList:
             for (var i = 0; i < this.cryptoList.length; i++) {
                 this.cryptoList[i].change7d = this.change7dList[i];
@@ -174,7 +178,25 @@ export default {
         margin-top: 2rem;
     }
     .globalData {
+        display: flex;
+        justify-content: center;
+    }
+    .topMarketCard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-color: #043743;
+        width: 15vw;
+        margin: 0 1rem;
+        padding: 1rem;
+        font-weight: 200;
+    }
+    .middle {
+        display: flex;
+        flex-direction: column;
+    }
+    .middle p {
+        margin-bottom: 0;
     }
     .globalData li{
         list-style-type: none;
@@ -195,6 +217,7 @@ export default {
     th {
         text-align: left;
         width: calc(100%/9);
+        font-weight: 200;
     }
     tbody tr .card {
         font-size: 0.85em;
@@ -206,5 +229,23 @@ export default {
     .showMore:hover {
         background-color: #6D4D03;
         color: #fff;
+    }
+/*------------- MEDIA QUERIES -------------*/
+    @media (min-width: 360px) {
+        .topMarketCard {
+            min-width: 30vw;
+            margin: 0 0.2rem;
+            padding: 0.2rem;
+            overflow-wrap: break-word;
+            font-size: 0.7rem;
+        }
+        table {
+            display: block;
+            overflow-x: auto;
+            min-width: 100%;
+        }
+        th {
+            min-width: 30vw;
+        }
     }
 </style>
