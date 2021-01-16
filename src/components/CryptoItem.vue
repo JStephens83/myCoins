@@ -1,10 +1,10 @@
 <template>
     <div class="card">
-        <td id="rank pl-3">
+        <td id="rank">
             <!-- rank -->
             <p>{{ detail.rank }}</p>
         </td>
-        <td id="name">
+        <td id="name" class="pl-3">
             <!-- name -->
             <p>{{ detail.name }}</p>
         </td>
@@ -20,15 +20,18 @@
         </td>
         <td id="change24h">
             <!-- evolution 24h -->
-            <p>{{ parseFloat(detail.change).toFixed(2) }} %</p>
+            <p v-if="detail.change < 0" style="color: #F5716C;">{{ parseFloat(detail.change).toFixed(2) }} %</p>
+            <p v-else-if="detail.change >= 0" style="color: #7DE8BA;">{{ parseFloat(detail.change).toFixed(2) }} %</p>
         </td>
         <td id="change7d"> 
             <!-- evolution 7 days -->
-            <p>{{ parseFloat(detail.change7d).toFixed(2) }} %</p>
+            <p v-if="detail.change7d < 0" style="color: #F5716C;">{{ parseFloat(detail.change7d).toFixed(2) }} %</p>
+            <p v-if="detail.change7d >= 0" style="color: #7DE8BA;">{{ parseFloat(detail.change7d).toFixed(2) }} %</p>
         </td>
         <td id="change30d">
             <!-- evolution 30 days -->
-            <p>{{ parseFloat(detail.change30d).toFixed(2) }} %</p>
+            <p v-if="detail.change30d < 0" style="color: #F5716C;">{{ parseFloat(detail.change30d).toFixed(2) }} %</p>
+            <p v-if="detail.change30d >= 0" style="color: #7DE8BA;">{{ parseFloat(detail.change30d).toFixed(2) }} %</p>
         </td>
         <td class="volume24">
             <!-- Volume (24h) -->
@@ -59,9 +62,6 @@ export default {
         margin: 0;
         padding: 0;
     }
-    /* .card-body .btn {
-        background-color: #000;
-    } */
     .card {
         color: #fff;
         background-color: #043743;
@@ -73,15 +73,18 @@ export default {
         border: 0;
         border-radius: 0;
     }
-    /* .card:hover {
-        background-color: #134E5C;
-    } */
     .card td {
         text-align: left;
-        width: calc(100%/9);
+        min-width: 8vw;
     }
     .card td a {
         width: 100%;
+    }
+    #rank {
+        min-width: 0vw;
+    }
+    #name {
+        overflow-wrap: break-word;
     }
     #imgcur {
         display: flex;
@@ -107,11 +110,55 @@ export default {
     }
     /*------------- MEDIA QUERIES -------------*/
     @media (min-width: 360px) {
-        td {
+        #rank {
+            min-width: 10vw;
+        }
+        .card td {
             min-width: 30vw;
         }
+        .card td p {
+            word-break: break-word;
+        }
         #imgcur img {
-            width: 10vw;
+            width: 8vw;
+        }
+    }
+    @media (min-width: 580px) {
+        #rank {
+            min-width: 5vw;
+        }
+        .card td {
+            min-width: 20vw;
+        }
+        #imgcur img {
+            width: 6vw;
+        }
+    }
+    @media (min-width: 768px) {
+        .card td {
+            min-width: 13vw;
+        }
+        #rank {
+            min-width: 0vw;
+        }
+        #imgcur img {
+            width: 5vw;
+        }
+    }
+    @media (min-width: 992px) {
+        .card td {
+            min-width: 10vw;
+        }
+        #rank {
+            min-width: 0vw;
+        }
+        #imgcur img {
+            width: 3vw;
+        }
+    }
+    @media (min-width: 1280px) {
+        .card td {
+            min-width: 8vw;
         }
     }
 </style>

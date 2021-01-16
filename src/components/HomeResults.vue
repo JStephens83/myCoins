@@ -1,5 +1,5 @@
 <template>
-    <div class="globalCard container mt-2 mr-2 ml-2 mx-auto">
+    <div class="globalCard container-xl mt-2 mr-2 ml-2 mx-auto">
         <p class="title">Global Market Statistics</p>
         <div class="globalData">
             <div class="topMarketCard">Total Volume (24h) : {{ parseFloat(globVol24).toLocaleString(undefined, {minimumFractionDigits: 2}) }} $</div>
@@ -7,12 +7,12 @@
                 <p>Total Coins : </p>
                 <p>{{ totalCoins }}</p>
             </div>
-            <div class="topMarketCard last">Global Cryptocurrency Market Capitalization : {{ parseFloat(marketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $
+            <div class="topMarketCard last">Global Cryptocurrency Market Capitalization : <br/> {{ parseFloat(marketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $
             </div>
         </div>
         <p class="title list">Crypto-currencies</p>
         <table>
-            <thead class="pl-3 pr-3 pt-3 pb-3">
+            <thead class="pr-3 pb-3">
                 <tr>
                     <th scope="col">Rank</th>
                     <th scope="col">Name</th>
@@ -21,7 +21,7 @@
                     <th scope="col">24h</th>
                     <th scope="col">7j</th>
                     <th scope="col">30j</th>
-                    <th scope="col">Volume (24h)</th>
+                    <th scope="col" id="vol24">Volume (24h)</th>
                     <th scope="col">Website</th>
                 </tr>
             </thead>
@@ -116,7 +116,7 @@ export default {
         .get(`${coins_url_7d}`)
         .then((reponse7d) => {
             this.cryptoList7d = reponse7d.data.data.coins;
-            // console.log(this.cryptoList7d)
+            console.log(this.cryptoList7d)
 
             // Adding change element to a new array
             this.cryptoList7d.forEach(elt => {
@@ -214,9 +214,12 @@ export default {
     thead th:nth-last-child(1) {
         text-align: center;
     }
-    th {
+    thead tr th:first-child {
+        min-width: 3vw;
+    }
+    thead th {
         text-align: left;
-        width: calc(100%/9);
+        min-width: 8vw;
         font-weight: 200;
     }
     tbody tr .card {
@@ -244,8 +247,69 @@ export default {
             overflow-x: auto;
             min-width: 100%;
         }
-        th {
-            min-width: 30vw;
+        thead th {
+            min-width: 29vw;
+        }
+        thead th:first-child {
+            min-width: 15vw;
         }
     }
+     @media (min-width: 580px) {
+        .topMarketCard {
+            padding: 1rem;
+            font-size: 0.8rem;
+            line-height: 1.3rem;
+        }
+        thead th {
+            min-width: 19vw;
+        }
+        thead th:first-child {
+            min-width: 10vw;
+        }
+     }
+    @media (min-width: 768px) {
+        .topMarketCard {
+            font-size: 1rem;
+        }
+        #vol24 {
+            font-size: 0.9rem;
+        }
+        thead th {
+            min-width: 12vw;
+        }
+        thead th:first-child {
+            min-width: 6vw;
+        }        
+    }
+    @media (min-width: 992px) {
+        table {
+            overflow-x: auto;
+        }
+        #vol24 {
+            font-size: 1rem;
+        }
+        thead th {
+            min-width: 8vw;
+        }
+        thead th:first-child {
+            min-width: 3vw;
+        }  
+    }
+    @media (min-width: 992px){
+        .globalData {
+            min-height: 30vh;
+        }
+        .topMarketCard {
+            min-width: 20vw;
+            line-height: 2rem;
+        }
+    } 
+    /* @media screen and (min-width: 1280px) {
+        thead th {
+            min-width: 8vw;
+        }
+        thead th:first-child {
+            min-width: 3vw;
+        }  
+    } */
 </style>

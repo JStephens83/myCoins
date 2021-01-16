@@ -30,9 +30,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  background : #01222A;
+  background : no-repeat center #01222A;
   color: #fff;
+  height: 100%;
 }
 .footLink {
   font-size: 0.75rem;
