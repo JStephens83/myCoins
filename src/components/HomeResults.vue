@@ -2,10 +2,12 @@
     <div class="globalCard container-xl mt-2 mr-2 ml-2 mx-auto">
         <p class="title">Global Market Statistics</p>
         <div class="globalData">
-            <div class="topMarketCard">Total Volume (24h) : {{ parseFloat(globVol24).toLocaleString(undefined, {minimumFractionDigits: 2}) }} $</div>
+            <div class="topMarketCard">Total Volume (24h) : {{ parseFloat(globVol24).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $</div>
             <div class="topMarketCard middle">
                 <p>Total Coins : </p>
                 <p>{{ totalCoins }}</p>
+                <!-- tolocalestring seems to be causing issues -->
+                <!-- <p>{{ totalCoins.toLocaleString(undefined, { maximumFractionDigits: 0}) }}</p> -->
             </div>
             <div class="topMarketCard last">Global Cryptocurrency Market Capitalization : <br/> {{ parseFloat(marketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $
             </div>
@@ -42,25 +44,10 @@
 import axios from 'axios'
 import CryptoItem from './CryptoItem'
 
+
 const coins_url = "https://api.coinranking.com/v2/coins"
 const coins_url_7d = "https://api.coinranking.com/v2/coins?timePeriod=7d"
 const coins_url_30d = "https://api.coinranking.com/v2/coins?timePeriod=30d"
-
-// const globStats_url = "https://api.coinranking.com/v2/stats"
-
-// const history_url = "https://api.coinranking.com/v2/coin/Qwsogvtv82FCd/history"
-
-//HEROKUAPP DELETED 01.2021, using firefox module instead
-// const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-
-// const access_token = 'coinrankingc3527795be2210a2aea7b0677f9aaea396a4656499dc6034'
-
-// const reqHeaders = {
-//     headers: {
-//         'Access-Control-Allow-Headers': 'x-access-token',
-//         'x-access-token': `token ${access_token}`
-//     }
-// }
 
 
 export default {

@@ -35,7 +35,7 @@
         </td>
         <td class="volume24">
             <!-- Volume (24h) -->
-            <p>{{ parseFloat(detail["24hVolume"]).toFixed().toLocaleString() }}</p>
+            <p>{{ parseFloat(detail["24hVolume"]).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</p>
         </td>
         <td id="webLink">
             <!-- website -->
