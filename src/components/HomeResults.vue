@@ -33,8 +33,8 @@
                     :detail="detail"
                     class="pt-3 pb-3 pl-3 pr-3"></cryptoItem>
                 </tr>
-                <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
             </tbody>
+            <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
         </table>
         <!-- <line-chart v-bind:data="chartData"></line-chart> -->
     </div>    
@@ -60,7 +60,6 @@ export default {
             globVol24: null,
             totalCoins: null,
             marketCap: null,
-
             cryptoList7d : [],
             cryptoList30d : [],
             change7dList : [],
@@ -70,7 +69,6 @@ export default {
     mounted(){
         //COINS DATA
         axios
-
         .get(`${coins_url}`)
         // .get(proxyUrl + coins_url, { 
         //     reqHeaders
@@ -99,7 +97,6 @@ export default {
 
         // EVOLUTION 7 DAYS
         axios
-
         .get(`${coins_url_7d}`)
         .then((reponse7d) => {
             this.cryptoList7d = reponse7d.data.data.coins;

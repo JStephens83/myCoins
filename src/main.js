@@ -4,6 +4,7 @@ import App from './App.vue'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from "../plugins/font-awesome.ts";
+// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 // import { FontAwesomeIcon } from "@/plugins/font-awesome.ts";
 
 // import Vue from 'vue'

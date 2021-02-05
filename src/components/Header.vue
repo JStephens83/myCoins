@@ -4,34 +4,56 @@
             <img src="../assets/coin_colored.png" alt="icon of a coin">
             <p>COINSTATION.COM</p>
         </div>
-        <ul class="headerMenu mt-3 mb-3">
-            <li>Home</li>
-            <li>My Coins</li>
-            <li>Register</li>
-        </ul>        
-        <fa icon="bars" type="fas" class="burgerIcon" v-on:click="openMenu"></fa>
+        <div class="headerMenu">
+            <ul class="mt-3 mb-3">
+                <li v-on:click="closeMenu" class="arrowIcon"><fa icon="arrow-right" type="fas"></fa></li>
+                <li class="menuList">Home</li>
+                <li class="menuList">My Coins</li>
+                <li class="menuList">Register</li>
+            </ul>
+        </div>
+        <div v-on:click="openMenu" class="burgerIcon">
+            <fa icon="bars" type="fas"></fa>
+        </div>       
     </div>
 </template>
 
 <script>
 
-import FontAwesomeIcon from "../../libs/FontAwesomeIcon.vue";
+import FontAwesomeIcon from "../../lib/FontAwesomeIcon.vue";
 
 
 export default {
-    data: function(){
+    data(){
         return {
         }
     },
     methods: {
         openMenu: function() {
-            //Open/Close mobile menu
+            // Open mobile menu:
             var burger = document.querySelector(".burgerIcon");
-            console.log(burger);
+            // console.log(burger);
             var mobileMenu = document.querySelector(".headerMenu");
-            console.log(mobileMenu);
-            // mobileMenu.classList.toggle ("hideMobile");
-            alert('tu as cliqué');
+            // console.log(mobileMenu);
+                // show menu + animation
+            mobileMenu.classList.add("showHide");
+                // Hide burger icon
+            burger.classList.add("hide");
+                // Show arrow:
+            var arrow = document.querySelector(".arrowIcon");
+            arrow.style.visibility="visible";
+        },
+        closeMenu: function() {
+            // Close mobile menu:
+            var arrow = document.querySelector(".arrowIcon");
+                // Hide arrow
+            arrow.style.visibility="hidden";
+                //hide menu + animation
+            var mobileMenu = document.querySelector(".headerMenu");
+            mobileMenu.classList.remove("showHide");
+                //Show burger icon
+            var burger = document.querySelector(".burgerIcon");
+            burger.classList.remove("hide");
         }
     },
     component: {
@@ -70,23 +92,45 @@ export default {
         margin-right: 2vw;
         cursor: pointer;
         display: none;
+        z-index: 100;
     }
     .headerMenu {
+        display: flex;
         flex-direction: row;
         justify-content: flex-end;
         width: 100%;
-        list-style-type: none;
         padding: 0;
+        z-index: 0;
+        transition-property: all;
+        transition-timing-function: ease-in-out;
+        transition-duration: 1s;
     }
-    /* li {
-        transition: transform .2s;
-    } */
-    li:hover {
+    .arrowIcon {
+        display: none;
+    }
+    .showHide {
+        right: 0 !important;
+        transition-property: all;
+        transition-timing-function: ease-in-out;
+        transition-duration: 1s;
+    }
+    .hide {
+        display: none !important;
+    }
+    li {
         cursor: pointer;
+        list-style-type: none;
+        
+    }
+    .headerMenu ul {
+        display: flex;
+        flex-direction: row;
+    }
+    .menuList:hover, .arrowIcon:hover {
         transform: scale(1.1);
     }
     /*------------- MEDIA QUERIES -------------*/
-    @media (min-width: 360px) {
+    /* @media (max-width: 360px) {
        #header {
            padding: 0;
        }
@@ -99,15 +143,34 @@ export default {
             justify-content: flex-end;
             margin-right: 1rem;
         }
-    }
+    } */
     @media (max-width: 768px) {
+        .arrowIcon {
+            display: flex;
+            padding: 0 0.5em 0.5em 0.5em;
+        }
         .burgerIcon {
             display: flex;
         }
         .headerMenu {
-            flex-direction: column;
             position: absolute;
             right: -200px;
+            top: 0;
+            display: flex;
+            align-items: flex-end;
+        }
+        .headerMenu ul {
+            flex-direction: column;
+            min-width: 20vw;
+            background-color: rgba(0,0,0,0.7);
+            padding: 0.5em;
+        }
+        .menuList {
+            padding: 0.5em;
+        }
+        .menuList:hover, .arrowIcon:hover {
+            transform: none;
+            color: grey;
         }
     }
 </style>

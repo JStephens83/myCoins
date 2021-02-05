@@ -81,7 +81,7 @@ export default {
         width: 100%;
     }
     #rank {
-        min-width: 0vw;
+        min-width: 3vw;
     }
     #name {
         overflow-wrap: break-word;
