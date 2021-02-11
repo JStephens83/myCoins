@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <header-top></header-top>
-    <h1 class="mt-3 mb-0">Welcome to MyCoins !</h1>
     <formulaire></formulaire>
     <home-results></home-results>
     <p class="footLink">Powered by <a href="https://coinranking.com" target="_blank">Coinranking</a> </p>
@@ -31,10 +30,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  padding: 0 2vw;
-  background : #01222A;
+  background : no-repeat center #01222A;
   color: #fff;
+  height: 100%;
 }
 .footLink {
   font-size: 0.75rem;
@@ -42,5 +40,8 @@ export default {
 }
 .footLink a{
   color: #95701B;
+}
+p {
+  font-weight: 200;
 }
 </style>

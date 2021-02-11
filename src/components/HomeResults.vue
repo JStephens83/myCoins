@@ -1,15 +1,20 @@
 <template>
-    <div class="globalCard container mt-2 mr-2 ml-2 mx-auto">
+    <div class="globalCard container-xl mt-2 mr-2 ml-2 mx-auto">
         <p class="title">Global Market Statistics</p>
-        <ul class="globalData card pt-3 pb-3 pl-3 pr-3s">
-            <li>Total Volume (24h) : {{ parseFloat(globVol24).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $</li>
-            <li>Total Coins : {{ totalCoins }} </li>
-            <li>Global Cryptocurrency Market Capitalization : {{ parseFloat(marketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $
-            </li>
-        </ul>
+        <div class="globalData">
+            <div class="topMarketCard">Total Volume (24h) : {{ parseFloat(globVol24).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $</div>
+            <div class="topMarketCard middle">
+                <p>Total Coins : </p>
+                <p>{{ totalCoins }}</p>
+                <!-- tolocalestring seems to be causing issues -->
+                <!-- <p>{{ totalCoins.toLocaleString(undefined, { maximumFractionDigits: 0}) }}</p> -->
+            </div>
+            <div class="topMarketCard last">Global Cryptocurrency Market Capitalization : <br/> {{ parseFloat(marketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $
+            </div>
+        </div>
         <p class="title list">Crypto-currencies</p>
         <table>
-            <thead class="pl-3 pr-3 pt-3 pb-3">
+            <thead class="pr-3 pb-3">
                 <tr>
                     <th scope="col">Rank</th>
                     <th scope="col">Name</th>
@@ -18,27 +23,18 @@
                     <th scope="col">24h</th>
                     <th scope="col">7j</th>
                     <th scope="col">30j</th>
-                    <th scope="col">Volume (24h)</th>
+                    <th scope="col" id="vol24">Volume (24h)</th>
                     <th scope="col">Website</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- fonctionne avec "="  -->
-                <tr v-bind:key="index" v-for="(detail, index) in cryptoList">
+                <tr v-for="(detail, index) in cryptoList" v-bind:key="index">
                     <cryptoItem 
                     :detail="detail"
-                    :cryptoList7d="cryptoList7d"
-                    class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
+                    class="pt-3 pb-3 pl-3 pr-3"></cryptoItem>
                 </tr>
-                <!-- Avec limitCryptoRes: 
-                    <tr v-bind:key="index" v-for="(detail, index) in limitCryptoRes">
-                    <cryptoItem 
-                    v-bind:cryptoList="detail"
-                    class="mt-1 mb-1 pt-3 pb-3 pl-3 pr-3"></cryptoItem>
-                </tr> -->
-
-                <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
             </tbody>
+            <div class="showMore btn mt-4 mb-4" v-on:click="limit = null">Show more</div>
         </table>
         <!-- <line-chart v-bind:data="chartData"></line-chart> -->
     </div>    
@@ -48,27 +44,10 @@
 import axios from 'axios'
 import CryptoItem from './CryptoItem'
 
-// const globStats_url = "https://api.coinranking.com/v2/stats"
-
-
-// const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-
 
 const coins_url = "https://api.coinranking.com/v2/coins"
 const coins_url_7d = "https://api.coinranking.com/v2/coins?timePeriod=7d"
 const coins_url_30d = "https://api.coinranking.com/v2/coins?timePeriod=30d"
-
-// const history_url = "https://api.coinranking.com/v2/coin/Qwsogvtv82FCd/history"
-
-
-// const access_token = 'coinrankingc3527795be2210a2aea7b0677f9aaea396a4656499dc6034'
-
-// const reqHeaders = {
-//     headers: {
-//         'Access-Control-Allow-Headers': 'x-access-token',
-//         'x-access-token': `token ${access_token}`
-//     }
-// }
 
 
 export default {
@@ -81,32 +60,27 @@ export default {
             globVol24: null,
             totalCoins: null,
             marketCap: null,
-
             cryptoList7d : [],
             cryptoList30d : [],
-            // elt7d: null
-
+            change7dList : [],
+            change30dList : []
         }
     },
     mounted(){
         //COINS DATA
         axios
-
         .get(`${coins_url}`)
         // .get(proxyUrl + coins_url, { 
         //     reqHeaders
         // })
         .then((reponseCoins) => {
-            // console.log(reponseCoins.data)
             //COINS DATA:
             this.cryptoList = reponseCoins.data.data.coins;
-            // this.cryptoList.push(reponseCoins.data.data.coins);
-            console.log(this.cryptoList)
-
-
+            // console.log(this.cryptoList)
 
             //GLOBAL DATA:
             this.globalStats = reponseCoins.data.data.stats;
+            // console.log(this.globalStats)
             //volume 24h
             this.globVol24 = this.globalStats.total24hVolume;
             //total coins
@@ -123,28 +97,20 @@ export default {
 
         // EVOLUTION 7 DAYS
         axios
-
         .get(`${coins_url_7d}`)
         .then((reponse7d) => {
-            // console.log(reponse7d.data)
-            // Test 3 avec composant :
             this.cryptoList7d = reponse7d.data.data.coins;
+            console.log(this.cryptoList7d)
 
-
-            // Test 2 avec composant:
-            // this.change7d = reponse7d.data.data.coins;
-            // console.log(this.change7d);
-            // this.change7d.forEach(elt => {
-            //     // console.log(elt.change)
-            //     this.cryptoList7d.push(elt.change);
-            // });
-            console.log(this.cryptoList7d);
-            //test1 : fonctionne mais pas utile pour le moment
-            // FONCTIONNE
-            // this.cryptoList7d = this.change7d;
-            // this.cryptoList.push(this.change7d);
-            // console.log(this.cryptoList7d);
-
+            // Adding change element to a new array
+            this.cryptoList7d.forEach(elt => {
+                this.change7dList.push(elt.change);
+            });
+            // console.log(this.change7dList);
+            // Adding change7d property to all elements in cryptoList:
+            for (var i = 0; i < this.cryptoList.length; i++) {
+                this.cryptoList[i].change7d = this.change7dList[i];
+            }
         })
         .catch((error) => {
             console.error(error)
@@ -156,19 +122,15 @@ export default {
         .get(`${coins_url_30d}`)
         .then((reponse30d) => {
             // console.log(reponse30d.data)
-            this.change30d = reponse30d.data.data.coins;
-
-            this.change30d.forEach(elt => {
-                // console.log(elt.change)
-                this.cryptoList30d.push(elt.change);
+            this.cryptoList30d = reponse30d.data.data.coins;
+            // Adding change element to a new array
+            this.cryptoList30d.forEach(elt => {
+                this.change30dList.push(elt.change);
             });
-            // console.log(this.cryptoList30d);
-
-            // console.log(this.change30d);
-            //Test1 :  fonctionne mais pas utile pour le moment
-            // this.cryptoList30d = this.change30d;
-            // console.log(this.cryptoList30d);
-
+            // Adding change30d property to all elements in cryptoList:
+            for (var i = 0; i < this.cryptoList.length; i++) {
+                this.cryptoList[i].change30d = this.change30dList[i];
+            }
         })
         .catch((error) => {
             console.error(error)
@@ -180,27 +142,6 @@ export default {
         // limitCryptoRes: function() {
         //     return this.limit ? this.cryptoList.slice(0, this.limit) : this.cryptoList;
         // },
-        
-        //elt inside elt
-        // changes: function() {
-        //     var changes7d = [];
-        //     for (let i = 0; i < this.cryptoList7d.length; i++) {
-        //         console.log("length is " + i)
-        //         console.log(this.cryptoList7d.length)
-        //     //     for (let j = 0; j < this.cryptoList[i].length; j++) {
-        //     //         changes.push(this.cryptoList[i][j].change)
-        //     //         console.log(this.cryptoList[i][j].change + " " + [j])
-        //     //     }
-
-        //     // test 2:
-
-        //     }
-
-
-        //     console.log(changes7d)
-        //     return changes7d;
-        // }
-
     },
     components: {
         'cryptoItem' : CryptoItem
@@ -221,7 +162,25 @@ export default {
         margin-top: 2rem;
     }
     .globalData {
+        display: flex;
+        justify-content: center;
+    }
+    .topMarketCard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-color: #043743;
+        width: 15vw;
+        margin: 0 1rem;
+        padding: 1rem;
+        font-weight: 200;
+    }
+    .middle {
+        display: flex;
+        flex-direction: column;
+    }
+    .middle p {
+        margin-bottom: 0;
     }
     .globalData li{
         list-style-type: none;
@@ -239,9 +198,13 @@ export default {
     thead th:nth-last-child(1) {
         text-align: center;
     }
-    th {
+    thead tr th:first-child {
+        min-width: 3vw;
+    }
+    thead th {
         text-align: left;
-        width: calc(100%/9);
+        min-width: 8vw;
+        font-weight: 200;
     }
     tbody tr .card {
         font-size: 0.85em;
@@ -254,4 +217,83 @@ export default {
         background-color: #6D4D03;
         color: #fff;
     }
+/*------------- MEDIA QUERIES -------------*/
+    @media (min-width: 360px) {
+        .topMarketCard {
+            min-width: 30vw;
+            margin: 0 0.2rem;
+            padding: 0.2rem;
+            overflow-wrap: break-word;
+            font-size: 0.7rem;
+        }
+        table {
+            display: block;
+            overflow-x: auto;
+            min-width: 100%;
+        }
+        thead th {
+            min-width: 29vw;
+        }
+        thead th:first-child {
+            min-width: 15vw;
+        }
+    }
+     @media (min-width: 580px) {
+        .topMarketCard {
+            padding: 1rem;
+            font-size: 0.8rem;
+            line-height: 1.3rem;
+        }
+        thead th {
+            min-width: 19vw;
+        }
+        thead th:first-child {
+            min-width: 10vw;
+        }
+     }
+    @media (min-width: 768px) {
+        .topMarketCard {
+            font-size: 1rem;
+        }
+        #vol24 {
+            font-size: 0.9rem;
+        }
+        thead th {
+            min-width: 12vw;
+        }
+        thead th:first-child {
+            min-width: 6vw;
+        }        
+    }
+    @media (min-width: 992px) {
+        table {
+            overflow-x: auto;
+        }
+        #vol24 {
+            font-size: 1rem;
+        }
+        thead th {
+            min-width: 8vw;
+        }
+        thead th:first-child {
+            min-width: 3vw;
+        }  
+    }
+    @media (min-width: 992px){
+        .globalData {
+            min-height: 30vh;
+        }
+        .topMarketCard {
+            min-width: 20vw;
+            line-height: 2rem;
+        }
+    } 
+    /* @media screen and (min-width: 1280px) {
+        thead th {
+            min-width: 8vw;
+        }
+        thead th:first-child {
+            min-width: 3vw;
+        }  
+    } */
 </style>

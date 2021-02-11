@@ -1,62 +1,43 @@
 <template>
     <div class="card">
-        <td class="rank pl-3">
+        <td id="rank">
             <!-- rank -->
             <p>{{ detail.rank }}</p>
         </td>
-        <td>
+        <td id="name" class="pl-3">
             <!-- name -->
             <p>{{ detail.name }}</p>
         </td>
-        <!-- <td> -->
-            <!-- symbol -->
-            <!-- <p>{{ cryptoList.symbol }}</p> -->
-        <!-- </td> -->
-        <td class="imgcur">
+        <td id="imgcur">
             <img class="card-img-top mr-3" v-bind:src="detail.iconUrl">
             <!-- Symbol -->
             <h5>{{ detail.symbol }}</h5>
         </td>
-        <!-- <td> -->
-            <!-- Symbol -->
-            <!-- <p>{{ cryptoList.symbol }} </p> -->
-        <!-- </td> -->
-
-        <!-- <td> -->
-            <!-- Price -->
-            <!-- <p>{{ parseFloat(cryptoList.price).toLocaleString() }} $ </p> -->
-        <!-- </td> -->
-        <td>
+        <td id="sparkline">
             <!-- Price -->
             <p v-if="detail.sparkline[detail.sparkline.length-1] > detail.sparkline[detail.sparkline.length-2]" style="color: #7DE8BA;">{{ parseFloat(detail.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $ &nearr;</p>
             <p v-else style="color:#F5716C;">{{ parseFloat(detail.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }} $ &searr;</p>
         </td>
-        <td>
+        <td id="change24h">
             <!-- evolution 24h -->
-            <p>{{ parseFloat(detail.change).toFixed(2) }} %</p>
+            <p v-if="detail.change < 0" style="color: #F5716C;">{{ parseFloat(detail.change).toFixed(2) }} %</p>
+            <p v-else-if="detail.change >= 0" style="color: #7DE8BA;">{{ parseFloat(detail.change).toFixed(2) }} %</p>
         </td>
-        <td> 
-            <table>
-                <td v-bind:key="index" v-for="(elt7d, index) in cryptoList7d">
-                    <item7d :elt7d="elt7d"></item7d>
-                    <!-- {{ elt7d.name }} -->
-                </td>
-            </table>
-
+        <td id="change7d"> 
             <!-- evolution 7 days -->
-            <!-- <p>{{ evol7d.change }} %</p> -->
-            <!-- <p>{{ parseFloat(evol7d.change).toFixed(2) }} %%</p> -->
+            <p v-if="detail.change7d < 0" style="color: #F5716C;">{{ parseFloat(detail.change7d).toFixed(2) }} %</p>
+            <p v-if="detail.change7d >= 0" style="color: #7DE8BA;">{{ parseFloat(detail.change7d).toFixed(2) }} %</p>
         </td>
-        <td>
+        <td id="change30d">
             <!-- evolution 30 days -->
-            <!-- <p>{{ evol30d.uuid }} %</p> -->
-            <!-- <p>{{ parseFloat(evol30d.change).toFixed(2) }} %</p> -->
+            <p v-if="detail.change30d < 0" style="color: #F5716C;">{{ parseFloat(detail.change30d).toFixed(2) }} %</p>
+            <p v-if="detail.change30d >= 0" style="color: #7DE8BA;">{{ parseFloat(detail.change30d).toFixed(2) }} %</p>
         </td>
-        <td>
+        <td class="volume24">
             <!-- Volume (24h) -->
-            <p>{{ parseFloat(detail["24hVolume"]).toFixed().toLocaleString() }}</p>
+            <p>{{ parseFloat(detail["24hVolume"]).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</p>
         </td>
-        <td>
+        <td id="webLink">
             <!-- website -->
             <a v-bind:href="detail.websiteUrl" target="_blank" class="btn">Trade & Details</a>
 
@@ -65,15 +46,10 @@
 </template>
 
 <script>
-// import Item7d from './Item7d'
 
 export default {
     name: "cryptoItem",
-    props: ['detail', 'crypto', 'urlIcon', 'lastEvol', 'previousEvol', 'coinUuid', 'listUuids', 'idLinks', 'cryptoList', 'sparkline', 'change', 'index', 'elt7d', 'cryptoList7d'],
-    components: {
-        // 'item7d' : Item7d
-    }
-
+    props: ['detail', 'crypto', 'urlIcon', 'cryptoList', 'sparkline', 'change']
 }
 </script>
 
@@ -86,9 +62,6 @@ export default {
         margin: 0;
         padding: 0;
     }
-    .card-body .btn {
-        background-color: #000;
-    }
     .card {
         color: #fff;
         background-color: #043743;
@@ -97,36 +70,95 @@ export default {
         align-items: center;
         justify-content: space-between;
         width: 100%;
-    }
-    .card:hover {
-        background-color: #134E5C;
+        border: 0;
+        border-radius: 0;
     }
     .card td {
         text-align: left;
-        width: calc(100%/6);
+        min-width: 8vw;
     }
     .card td a {
         width: 100%;
     }
-    .imgcur {
+    #rank {
+        min-width: 3vw;
+    }
+    #name {
+        overflow-wrap: break-word;
+    }
+    #imgcur {
         display: flex;
         align-items: center;
     }
-    .imgcur img {
+    #imgcur img {
         width:3vw;
         height: auto;
         text-align: center;
     }
-    .imgcur h5 {
-        font-size: 1em;
+    #imgcur h5 {
+        font-size: 1rem;
     }
     .btn {
         background-color: #95701B;
         color: #fff;
         font-size: 1em;
+        font-weight: 200;
     }
     .btn:hover {
         background-color: #6D4D03;
         color: #fff;
+    }
+    /*------------- MEDIA QUERIES -------------*/
+    @media (min-width: 360px) {
+        #rank {
+            min-width: 10vw;
+        }
+        .card td {
+            min-width: 30vw;
+        }
+        .card td p {
+            word-break: break-word;
+        }
+        #imgcur img {
+            width: 8vw;
+        }
+    }
+    @media (min-width: 580px) {
+        #rank {
+            min-width: 5vw;
+        }
+        .card td {
+            min-width: 20vw;
+        }
+        #imgcur img {
+            width: 6vw;
+        }
+    }
+    @media (min-width: 768px) {
+        .card td {
+            min-width: 13vw;
+        }
+        #rank {
+            min-width: 0vw;
+        }
+        #imgcur img {
+            width: 5vw;
+        }
+    }
+    @media (min-width: 992px) {
+        .card td {
+            min-width: 10vw;
+        }
+        #rank {
+            min-width: 0vw;
+        }
+        #imgcur img {
+            width: 3vw;
+        }
+    }
+    @media (min-width: 1280px) {
+        .card td {
+            min-width: 8vw;
+        }
     }
 </style>
