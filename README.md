@@ -1,4 +1,7 @@
-# mycoins
+# mycoins 🪙 🪙 
+
+This project is a training on Vue2.
+This is a dashboard showing the list of top cryptocurrencies as well as their evolutions, using the coinRanking API.
 
 ## Project setup
 ```
